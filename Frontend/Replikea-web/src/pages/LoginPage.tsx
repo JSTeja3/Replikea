@@ -5,7 +5,7 @@ function LoginPage(){
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
 
-    function handleContinue(){
+    async function handleContinue(){
         if(!email.trim()){
             setError('Please enter your email')
             return
@@ -16,7 +16,26 @@ function LoginPage(){
         }
 
         setError('');
-        setShowPassword(true);
+
+        const response = await fetch(
+            'http://localhost:5031/api/auth/check-email', 
+            {
+                method:'Post',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body:JSON.stringify({
+                    email: email,
+                }),
+            }
+        )
+
+        const data = await response.json()
+        console.log('Backend response:', data)
+        if(data.requiresPassword){
+            setShowPassword(true)
+        }
+        
     }
 
     return(
