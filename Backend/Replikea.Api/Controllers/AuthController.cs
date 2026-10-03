@@ -1,27 +1,30 @@
 using Microsoft.AspNetCore.Mvc;
 
+using Replikea.Application.DTOs.Authentication;
+using Replikea.Application.Interfaces;
+
+
+
 namespace Replikea.Api.Controllers;
 
 [ApiController]
 [Route("api/auth")]
 public class AuthController : ControllerBase
 {
-    [HttpPost("check-email")]
-    public IActionResult CheckEmail([FromBody] CheckEmailRequest request)
-    {
-        if (string.IsNullOrWhiteSpace(request.Email))
-        {
-            return BadRequest("Email is required.");
-        }
+    private readonly IAuthenticationService authService;
 
-        return Ok(new
-        {
-            requiresPassword = true
-        });
+    public AuthController(IAuthenticationService authService)
+    {
+        this.authService = authService;
+    }
+
+
+    [HttpPost("check-email")]
+    public async Task<ActionResult<CheckEmailResponse>> CheckEmailAsync(CheckEmailRequest request)
+    {
+        var result = await authService.CheckEmailAsync(request);
+
+        return Ok(result);
     }
 }
 
-public class CheckEmailRequest
-{
-    public string Email {get; set;} = string.Empty;
-}

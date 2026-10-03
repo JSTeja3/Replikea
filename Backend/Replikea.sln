@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Replikea.Api", "Replikea.Api\Replikea.Api.csproj", "{A08167AD-633A-41ED-BC3C-3C3E174AABC6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Replikea.Application", "Replikea.Application\Replikea.Application.csproj", "{31ED8D08-A8CE-49B6-ACD2-CDE25474E905}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{A08167AD-633A-41ED-BC3C-3C3E174AABC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A08167AD-633A-41ED-BC3C-3C3E174AABC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A08167AD-633A-41ED-BC3C-3C3E174AABC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31ED8D08-A8CE-49B6-ACD2-CDE25474E905}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31ED8D08-A8CE-49B6-ACD2-CDE25474E905}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31ED8D08-A8CE-49B6-ACD2-CDE25474E905}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31ED8D08-A8CE-49B6-ACD2-CDE25474E905}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
