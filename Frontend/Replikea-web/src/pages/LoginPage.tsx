@@ -31,7 +31,7 @@ function LoginPage(){
         )
 
         const data = await response.json()
-        console.log('Backend response:', data)
+        
         if(data.requiresPassword){
             setShowPassword(true)
         }
