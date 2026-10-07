@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
 using Replikea.Application.DTOs.Authentication;
-using Replikea.Application.Interfaces;
+using Replikea.Application.Interfaces.Authentication;
 
 
 
@@ -47,6 +47,15 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<CheckEmailResponse>> CheckEmailAsync(CheckEmailRequest request)
     {
         var result = await authService.CheckEmailAsync(request);
+
+        return Ok(result);
+    }
+
+    [HttpPost("login")]
+    public async Task<ActionResult<LoginResponseAuthApi>> Login(
+    LoginRequest request)
+    {
+        var result = await authService.LoginAsync(request);
 
         return Ok(result);
     }

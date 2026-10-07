@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Replikea.Application.Interfaces;
-using Replikea.Application.Services;
 using Microsoft.OpenApi.Models;
+using Replikea.Application.Interfaces.Authentication;
+using Replikea.Application.Services.Authentication;
+using Replikea.Infrastructure.Authentication;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -77,6 +78,15 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });  
+
+builder.Services.AddHttpClient<IAuthApiClient, AuthApiClient>(
+    client =>
+    {
+        client.BaseAddress = new Uri(
+            builder.Configuration["AuthApi:BaseUrl"]
+            ?? throw new InvalidOperationException(
+                "Auth API base URL is not configured."));
+    });
 
 var app = builder.Build();
 

@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Replikea.Application\Replikea.Application.csproj" />
+    <ProjectReference Include="..\Replikea.Infrastructure\Replikea.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

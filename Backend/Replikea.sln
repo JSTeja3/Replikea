@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Replikea.Api", "Replikea.Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Replikea.Application", "Replikea.Application\Replikea.Application.csproj", "{31ED8D08-A8CE-49B6-ACD2-CDE25474E905}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Replikea.Infrastructure", "Replikea.Infrastructure\Replikea.Infrastructure.csproj", "{7FDDEB0E-9017-4DB4-A583-3967ADE351F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{31ED8D08-A8CE-49B6-ACD2-CDE25474E905}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31ED8D08-A8CE-49B6-ACD2-CDE25474E905}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31ED8D08-A8CE-49B6-ACD2-CDE25474E905}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FDDEB0E-9017-4DB4-A583-3967ADE351F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FDDEB0E-9017-4DB4-A583-3967ADE351F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FDDEB0E-9017-4DB4-A583-3967ADE351F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FDDEB0E-9017-4DB4-A583-3967ADE351F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
