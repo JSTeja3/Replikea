@@ -14,10 +14,12 @@ namespace Replikea.Api.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthenticationService authService;
+    private readonly IWebHostEnvironment environment;
 
-    public AuthController(IAuthenticationService authService)
+    public AuthController(IAuthenticationService authService, IWebHostEnvironment environment)
     {
         this.authService = authService;
+        this.environment = environment;
     }
 
     [Authorize]
@@ -57,7 +59,25 @@ public class AuthController : ControllerBase
     {
         var result = await authService.LoginAsync(request);
 
-        return Ok(result);
+        //Store refresh token in browser-managed cookie 
+        Response.Cookies.Append(
+            "replikea_refresh",
+            result.RefreshToken,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = !environment.IsDevelopment(),
+                SameSite = SameSiteMode.Lax,
+                Path = "api/auth"
+            }
+        );
+
+
+        //Return only access token to react in response body
+        return Ok(new LoginResponse
+        {
+            AccessToken = result.AccessToken
+        });
     }
 }
 

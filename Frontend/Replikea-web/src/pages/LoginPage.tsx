@@ -4,6 +4,7 @@ function LoginPage(){
     const [email, setEmail] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
+    const [btnName, SetBtnName] = useState('Continue');
 
     async function handleContinue(){
         if(!email.trim()){
@@ -25,15 +26,16 @@ function LoginPage(){
                     'Content-Type': 'application/json',
                 },
                 body:JSON.stringify({
-                    email: email,
-                }),
+                    email: email
+                })
             }
         )
 
         const data = await response.json()
         
         if(data.requiresPassword){
-            setShowPassword(true)
+            setShowPassword(true);
+            SetBtnName('Login')
         }
         
     }
@@ -65,7 +67,7 @@ function LoginPage(){
             )}
             
 
-            <button onClick = {handleContinue}>Continue</button>
+            <button onClick = {handleContinue}>{btnName}</button>
 
             {error && (<p>{error}</p>)}
             <p>Your email: {email}</p>
