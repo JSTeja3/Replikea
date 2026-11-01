@@ -1,78 +1,124 @@
-import { useState } from 'react'
+import { useState } from "react";
 
-function LoginPage(){
-    const [email, setEmail] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = useState('');
-    const [btnName, SetBtnName] = useState('Continue');
+function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [btnName, setBtnName] = useState("Continue");
+  const [password, setPassword] = useState("");
+  const [accessToken, setAccessToken] = useState("");
 
-    async function handleContinue(){
-        if(!email.trim()){
-            setError('Please enter your email')
-            return
-        }
-        if(!email.includes('@')){
-            setError('Please enter a valid email address');
-            return
-        }
-
-        setError('');
-
-        const response = await fetch(
-            'http://localhost:5031/api/auth/check-email', 
-            {
-                method:'Post',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body:JSON.stringify({
-                    email: email
-                })
-            }
-        )
-
-        const data = await response.json()
-        
-        if(data.requiresPassword){
-            setShowPassword(true);
-            SetBtnName('Login')
-        }
-        
+  async function handleLogin() {
+    if (!email.trim()) {
+      setError("Please enter your email");
+      return;
+    }
+    if (!email.includes("@")) {
+      setError("Please enter a valid email address");
+      return;
     }
 
-    return(
-        <main>
-            <h1>Sign In</h1>
-            <p>Welcome Back to Replikea</p>
+    setError("");
 
-            <label>
-                Work Email:
-            </label>
-            <input 
-                type="email"
-                value={email}
-                onChange={(event)=>setEmail(event.target.value)}
-            />
+    try{
 
-            {showPassword && (
-                <div>
-                    <label>
-                        Password:
-                    </label>
+    //FLOW 1: Check email
+    if (!showPassword) {
+      const response = await fetch(
+        "http://localhost:5031/api/auth/check-email",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+          })
+        }
+      );
 
-                    <input 
-                        type="password"
-                    />
-                </div>
-            )}
-            
+      if (!response.ok) {
+          throw new Error("Unable to check email");
+      }
 
-            <button onClick = {handleContinue}>{btnName}</button>
+      const data = await response.json();
 
-            {error && (<p>{error}</p>)}
-            <p>Your email: {email}</p>
-        </main>
-    )
+      if (data.requiresPassword) {
+        setShowPassword(true);
+        setBtnName("Login");
+      }
+
+      return;
+    }
+    //FLOW 2: Validate Password
+    if (!password.trim()) {
+        setError("Please enter your password");
+        return;
+      }
+
+        const response  = await fetch(
+            "http://localhost:5031/api/auth/login",
+            {
+                method: 'POST',
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            }
+        );
+        if (!response.ok) {
+        throw new Error("Invalid email or password");
+      }
+
+        const data = await response.json();
+        
+        if(!accessToken){
+          setAccessToken(data.accessToken);
+        }
+
+    }
+    catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Something went wrong"
+      );
+    }
+  }
+
+  return (
+    <main>
+      <h1>Sign In</h1>
+      <p>Welcome Back to Replikea</p>
+
+      <label>Work Email:</label>
+      <input
+        type="email"
+        value={email}
+        onChange={(event) => setEmail(event.target.value)}
+        disabled={showPassword}
+      />
+
+      {showPassword && (
+        <div>
+          <label>Password:</label>
+
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </div>
+      )}
+
+      <button onClick={handleLogin}>{btnName}</button>
+
+      {error && <p>{error}</p>}
+      <p>Your email: {email}</p>
+    </main>
+  );
 }
 
-export default LoginPage
+export default LoginPage;
