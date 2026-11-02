@@ -4,11 +4,17 @@
 // import viteLogo from './assets/vite.svg'
 import './App.css'
 import LoginPage from './pages/LoginPage'
+import HomePage from './pages/HomePage'
+import { useAuth } from './context/useAuth'
 
 function App() {
+  const {isAuthenticated} = useAuth();
   return (
-    <LoginPage />
-  )
+    <>
+      {isAuthenticated ? <HomePage /> : <LoginPage />}
+    </>
+      
+  );
 }
 
 export default App

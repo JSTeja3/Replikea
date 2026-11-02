@@ -5,4 +5,5 @@ namespace Replikea.Application.Interfaces.Authentication;
 public interface IAuthApiClient
 {
     Task<LoginResponseAuthApi> LoginAsync(LoginRequest request);
+    Task<LoginResponseAuthApi> RefreshAsync(RefreshRequest request);
 }

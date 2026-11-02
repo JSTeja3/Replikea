@@ -79,5 +79,44 @@ public class AuthController : ControllerBase
             AccessToken = result.AccessToken
         });
     }
+
+
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh()
+    {
+        // Read refresh token from browser cookie.
+        var refreshToken = Request.Cookies["replikea_refresh"];
+
+        if (string.IsNullOrEmpty(refreshToken))
+        {
+            return Unauthorized();
+        }
+
+        var result = await authService.RefreshAsync(
+            new RefreshRequest
+            {
+                RefreshToken = refreshToken
+            }
+        );
+
+        // Replace old cookie with rotated refresh token.
+        Response.Cookies.Append(
+            "replikea_refresh",
+            result.RefreshToken,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = !environment.IsDevelopment(),
+                SameSite = SameSiteMode.Lax,
+                Path = "api/auth"
+            }
+        );
+
+        // Return only access token.
+        return Ok(new LoginResponse
+        {
+            AccessToken = result.AccessToken
+        });
+    }
 }
 

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useAuth } from "../context/useAuth";
+
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -6,7 +8,7 @@ function LoginPage() {
   const [error, setError] = useState("");
   const [btnName, setBtnName] = useState("Continue");
   const [password, setPassword] = useState("");
-  const [accessToken, setAccessToken] = useState("");
+  const {login} = useAuth();
 
   async function handleLogin() {
     if (!email.trim()) {
@@ -20,71 +22,78 @@ function LoginPage() {
 
     setError("");
 
-    try{
-
-    //FLOW 1: Check email
-    if (!showPassword) {
-      const response = await fetch(
-        "http://localhost:5031/api/auth/check-email",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+    try {
+      //FLOW 1: Check email
+      if (!showPassword) {
+        const response = await fetch(
+          "http://localhost:5031/api/auth/check-email",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: email,
+            }),
           },
-          body: JSON.stringify({
-            email: email,
-          })
-        }
-      );
+        );
 
-      if (!response.ok) {
+        if (!response.ok) {
           throw new Error("Unable to check email");
+        }
+
+        const data = await response.json();
+
+        if (data.requiresPassword) {
+          setShowPassword(true);
+          setBtnName("Login");
+        }
+
+        return;
       }
-
-      const data = await response.json();
-
-      if (data.requiresPassword) {
-        setShowPassword(true);
-        setBtnName("Login");
-      }
-
-      return;
-    }
-    //FLOW 2: Validate Password
-    if (!password.trim()) {
+      //FLOW 2: Validate Password
+      if (!password.trim()) {
         setError("Please enter your password");
         return;
       }
 
-        const response  = await fetch(
-            "http://localhost:5031/api/auth/login",
-            {
-                method: 'POST',
-                headers:{
-                    'Content-Type': 'application/json'
-                },
-                credentials: "include",
-                body: JSON.stringify({
-                    email: email,
-                    password: password
-                })
-            }
-        );
-        if (!response.ok) {
+      const response = await fetch("http://localhost:5031/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+      if (!response.ok) {
         throw new Error("Invalid email or password");
       }
 
-        const data = await response.json();
-        
-        if(!accessToken){
-          setAccessToken(data.accessToken);
-        }
+      const data = await response.json();
 
-    }
-    catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Something went wrong"
+      const sessionResponse = await fetch(
+        "http://localhost:5031/api/auth/session",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${data.accessToken}`,
+          }
+        }
       );
+
+      if (!sessionResponse.ok) {
+        throw new Error("Unable to establish authenticated session");
+      }
+
+      const sessionData = await sessionResponse.json();
+
+      login(data.accessToken, sessionData);
+
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
     }
   }
 

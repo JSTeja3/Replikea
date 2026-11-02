@@ -27,4 +27,8 @@ public class AuthenticationService : IAuthenticationService
     {
         return await authApiClient.LoginAsync(request);
     }
+    public async Task<LoginResponseAuthApi> RefreshAsync(RefreshRequest request)
+    {
+        return await authApiClient.RefreshAsync(request);
+    }
 }

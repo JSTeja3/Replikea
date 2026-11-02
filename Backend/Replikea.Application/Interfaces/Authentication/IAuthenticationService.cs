@@ -6,4 +6,5 @@ public interface IAuthenticationService
 {
     Task<CheckEmailResponse> CheckEmailAsync(CheckEmailRequest request);
     Task<LoginResponseAuthApi> LoginAsync(LoginRequest request);
+    Task<LoginResponseAuthApi> RefreshAsync(RefreshRequest request);
 }
