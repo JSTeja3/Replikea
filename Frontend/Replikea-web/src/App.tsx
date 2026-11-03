@@ -8,13 +8,12 @@ import HomePage from './pages/HomePage'
 import { useAuth } from './context/useAuth'
 
 function App() {
-  const {isAuthenticated} = useAuth();
-  return (
-    <>
-      {isAuthenticated ? <HomePage /> : <LoginPage />}
-    </>
-      
-  );
+  const {isAuthenticated, isLoading} = useAuth();
+
+  if(isLoading){
+    return <p>Checking your session...</p>
+  }
+  return isAuthenticated? <HomePage /> : <LoginPage />;
 }
 
 export default App
