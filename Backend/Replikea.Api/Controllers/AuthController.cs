@@ -118,5 +118,34 @@ public class AuthController : ControllerBase
             AccessToken = result.AccessToken
         });
     }
+
+    [HttpPost("logout")]
+    public async Task<IActionResult> Logout()
+    {
+        var refreshToken = Request.Cookies["replikea-refresh"];
+
+        if (!string.IsNullOrEmpty(refreshToken))
+        {
+            await authService.LogoutAsync(
+                new LogoutRequest
+                {
+                    RefreshToken = refreshToken
+                }
+            );
+        }
+
+        Response.Cookies.Delete(
+            "replikea_refresh",
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = !environment.IsDevelopment(),
+                SameSite = SameSiteMode.Lax,
+                Path = "api/auth"
+            }
+        );
+
+        return Ok(new {message = "Logged out successfully"});
+    }
 }
 

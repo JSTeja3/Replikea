@@ -31,4 +31,8 @@ public class AuthenticationService : IAuthenticationService
     {
         return await authApiClient.RefreshAsync(request);
     }
+    public async Task<LogoutResponse> LogoutAsync(LogoutRequest request)
+    {
+        return await authApiClient.LogoutAsync(request);
+    }
 }

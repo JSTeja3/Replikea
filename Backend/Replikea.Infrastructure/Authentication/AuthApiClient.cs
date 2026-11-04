@@ -41,4 +41,18 @@ public class AuthApiClient : IAuthApiClient
                 "Auth API returned an empty response.");
         
     }
+    public async Task<LogoutResponse> LogoutAsync(LogoutRequest request)
+    {
+        var response = await httpClient.PostAsJsonAsync("/api/auth/logout", request);
+
+        response.EnsureSuccessStatusCode();
+
+        var result = await response.Content
+            .ReadFromJsonAsync<LogoutResponse>();
+
+        return result
+            ?? throw new InvalidOperationException(
+                "Auth API returned an empty response.");
+        
+    }
 }
