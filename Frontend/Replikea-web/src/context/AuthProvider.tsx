@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { AuthContext, type AuthUser } from "./AuthContext";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -13,12 +19,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(false);
   }
 
-  function logout() {
-    setAccessToken(null);
-    setUser(null);
+  async function logout() {
+    try {
+      const response = await fetch("http://localhost:5031/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        throw new Error("Logout request failed");
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
+      throw error;
+    } finally {
+      setAccessToken(null);
+      setUser(null);
+    }
   }
 
-  const initializeAuth = useCallback(async ()=> {
+  const initializeAuth = useCallback(async () => {
     try {
       //1. Request new access token using the refresh token
       const refreshResponse = await fetch(
@@ -58,7 +78,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  },[]);
+  }, []);
 
   const isAuthenticated = accessToken !== null && user !== null;
 

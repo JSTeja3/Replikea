@@ -122,7 +122,8 @@ public class AuthController : ControllerBase
     [HttpPost("logout")]
     public async Task<IActionResult> Logout()
     {
-        var refreshToken = Request.Cookies["replikea-refresh"];
+        //var refreshToken = Request.Cookies["replikea_refresh"];
+        var refreshToken = Request.Cookies["replikea_refresh"];
 
         if (!string.IsNullOrEmpty(refreshToken))
         {
