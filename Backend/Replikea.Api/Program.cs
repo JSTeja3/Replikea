@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using Replikea.Application.Interfaces.Authentication;
 using Replikea.Application.Services.Authentication;
 using Replikea.Infrastructure.Authentication;
+using Replikea.Api.Middleware;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -97,6 +98,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.UseCors("ReplikeaFrontend");
 

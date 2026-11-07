@@ -146,7 +146,15 @@ public class AuthController : ControllerBase
             }
         );
 
-        return Ok(new {message = "Logged out successfully"});
+        return Ok(new { message = "Logged out successfully" });
+    }
+
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(RegisterRequest request)
+    {
+        var result = await authService.RegisterAsync(request);
+
+        return Ok(result);
     }
 }
 

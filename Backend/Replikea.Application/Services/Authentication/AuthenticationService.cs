@@ -35,4 +35,8 @@ public class AuthenticationService : IAuthenticationService
     {
         return await authApiClient.LogoutAsync(request);
     }
+    public async Task<RegisterResponse> RegisterAsync(RegisterRequest request)
+    {
+        return await authApiClient.RegisterAsync(request);
+    }
 }
