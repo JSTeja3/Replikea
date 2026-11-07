@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { useAuth } from "../context/useAuth";
+import RegisterPage from "./RegisterPage";
 
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-  const [btnName, setBtnName] = useState("Continue");
   const [password, setPassword] = useState("");
   const {login} = useAuth();
+  const [showRegister, setShowRegister] = useState(false);
 
   async function handleLogin() {
     if (!email.trim()) {
@@ -46,7 +47,6 @@ function LoginPage() {
 
         if (data.requiresPassword) {
           setShowPassword(true);
-          setBtnName("Login");
         }
 
         return;
@@ -97,6 +97,10 @@ function LoginPage() {
     }
   }
 
+  if(showRegister){
+    return <RegisterPage onBackToLogin={()=>setShowRegister(false)}></RegisterPage>
+  }
+
   return (
     <main>
       <h1>Sign In</h1>
@@ -122,7 +126,11 @@ function LoginPage() {
         </div>
       )}
 
-      <button onClick={handleLogin}>{btnName}</button>
+      <button onClick={handleLogin}>{showPassword?"Login":"Continue"}</button>
+      <p>
+        Don't have an account?{" "}
+        <button onClick={() => setShowRegister(true)}>Create Account</button>
+      </p>
 
       {error && <p>{error}</p>}
       <p>Your email: {email}</p>
