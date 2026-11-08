@@ -6,6 +6,7 @@ import {
   type ReactNode,
 } from "react";
 import { AuthContext, type AuthUser } from "./AuthContext";
+import { refreshSession, getSession, logout as logoutRequest} from "../services/authService"
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [accessToken, setAccessToken] = useState<string | null>(null);
@@ -21,14 +22,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function logout() {
     try {
-      const response = await fetch("http://localhost:5031/api/auth/logout", {
-        method: "POST",
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        throw new Error("Logout request failed");
-      }
+      await logoutRequest();
     } catch (error) {
       console.error("Logout failed:", error);
       throw error;
@@ -41,36 +35,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const initializeAuth = useCallback(async () => {
     try {
       //1. Request new access token using the refresh token
-      const refreshResponse = await fetch(
-        "http://localhost:5031/api/auth/refresh",
-        {
-          method: "POST",
-          credentials: "include",
-        },
-      );
-
-      if (!refreshResponse.ok) {
-        return;
-      }
-
-      const refreshData = await refreshResponse.json();
+      const refreshData = await refreshSession();
 
       //2. Validate the new access token and retrieve user details
-      const sessionResponse = await fetch(
-        "http://localhost:5031/api/auth/session",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${refreshData.accessToken}`,
-          },
-        },
-      );
-
-      if (!sessionResponse.ok) {
-        return;
-      }
-
-      const sessionData = await sessionResponse.json();
+      const sessionData = await getSession(refreshData.accessToken);
 
       login(refreshData.accessToken, sessionData);
     } catch (error) {

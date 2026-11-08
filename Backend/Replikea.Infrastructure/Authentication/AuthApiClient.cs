@@ -19,6 +19,11 @@ public class AuthApiClient : IAuthApiClient
     {
         var response = await httpClient.PostAsJsonAsync("/api/auth/login", request);
 
+        if(response.StatusCode == HttpStatusCode.Unauthorized)
+        {
+            throw new InvalidCredentialsException("Invalid email or password.");
+        }
+
         response.EnsureSuccessStatusCode();
 
         var result = await response.Content

@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { useAuth } from "../context/useAuth";
 import RegisterPage from "./RegisterPage";
+import { checkEmail, login as loginRequest, getSession } from  "../services/authService"
 
 
 function LoginPage() {
   const [email, setEmail] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordInput, setShowPasswordInput] = useState(false);
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const {login} = useAuth();
   const [showRegister, setShowRegister] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   async function handleLogin() {
     if (!email.trim()) {
@@ -25,28 +27,14 @@ function LoginPage() {
 
     try {
       //FLOW 1: Check email
-      if (!showPassword) {
-        const response = await fetch(
-          "http://localhost:5031/api/auth/check-email",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: email,
-            }),
-          },
-        );
+      if (!showPasswordInput) {
 
-        if (!response.ok) {
-          throw new Error("Unable to check email");
-        }
-
-        const data = await response.json();
+        const data = await checkEmail({
+          email:email
+        });
 
         if (data.requiresPassword) {
-          setShowPassword(true);
+          setShowPasswordInput(true);
         }
 
         return;
@@ -57,39 +45,16 @@ function LoginPage() {
         return;
       }
 
-      const response = await fetch("http://localhost:5031/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
+      //FLOW 3: Login
+      const data = await loginRequest({
+        email:email,
+        password:password
       });
-      if (!response.ok) {
-        throw new Error("Invalid email or password");
-      }
 
-      const data = await response.json();
+      //FLOW 4:Retrieve authentication token
+      const sessionData = await getSession(data.accessToken);
 
-      const sessionResponse = await fetch(
-        "http://localhost:5031/api/auth/session",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${data.accessToken}`,
-          }
-        }
-      );
-
-      if (!sessionResponse.ok) {
-        throw new Error("Unable to establish authenticated session");
-      }
-
-      const sessionData = await sessionResponse.json();
-
+      // FLOW 5: Update React authentication state
       login(data.accessToken, sessionData);
 
     } catch (err) {
@@ -98,7 +63,14 @@ function LoginPage() {
   }
 
   if(showRegister){
-    return <RegisterPage onBackToLogin={()=>setShowRegister(false)}></RegisterPage>
+    return <RegisterPage 
+    onBackToLogin={(registeredEmail)=>{
+      setEmail(registeredEmail);
+      setShowPasswordInput(false);
+      setPassword("");
+      setError("");
+      setShowRegister(false);
+    }}></RegisterPage>
   }
 
   return (
@@ -111,22 +83,23 @@ function LoginPage() {
         type="email"
         value={email}
         onChange={(event) => setEmail(event.target.value)}
-        disabled={showPassword}
+        disabled={showPasswordInput}
       />
 
-      {showPassword && (
+      {showPasswordInput && (
         <div>
           <label>Password:</label>
 
           <input
-            type="password"
+            type={showPassword? "text":"password"}
             value={password}
             onChange={(event) => setPassword(event.target.value)}
           />
+          <button type="button" onClick={()=>setShowPassword(!showPassword)}>{showPassword?"Hide":"Show"}</button>
         </div>
       )}
 
-      <button onClick={handleLogin}>{showPassword?"Login":"Continue"}</button>
+      <button onClick={handleLogin}>{showPasswordInput?"Login":"Continue"}</button>
       <p>
         Don't have an account?{" "}
         <button onClick={() => setShowRegister(true)}>Create Account</button>

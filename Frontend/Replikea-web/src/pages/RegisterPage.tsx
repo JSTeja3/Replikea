@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { register } from "../services/authService";
 
 interface RegisterPageProps {
-  onBackToLogin: () => void;
+  onBackToLogin: (registeredEmail: string) => void;
 }
 
 function RegisterPage({ onBackToLogin }: RegisterPageProps) {
@@ -9,13 +10,81 @@ function RegisterPage({ onBackToLogin }: RegisterPageProps) {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  function validateForm(){
+    if (!firstName.trim()) {
+        setError("Please enter your first name");
+        return false;
+    }
+
+    if (!lastName.trim()) {
+        setError("Please enter your last name");
+        return false;
+    }
+
+    if (!email.trim()) {
+        setError("Please enter your email");
+        return false;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        setError("Please enter a valid email address");
+        return false;
+    }
+
+    if (!password.trim()) {
+        setError("Please enter your password");
+        return false;
+    }
+
+    if (password.length < 8) {
+        setError("Password must contain at least 8 characters");
+        return false;
+    }
+
+    setError("");
+    return true;
+  }
+
+  async function handleRegister(){
+    if(!validateForm()){
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError("");
+
+    try{
+       await register({
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email: email.trim(),
+        password: password
+       })
+
+      onBackToLogin(email.trim());
+
+    }catch(err){
+      setError(err instanceof Error ? err.message : "Something went wrong");
+    }finally{
+      setIsSubmitting(false);
+    }
+  }
+
 
   return (
     <main>
       <h1>Create Account</h1>
       <p>Join Replikea</p>
 
-      <div>
+      <form 
+        onSubmit={(event)=>{
+          event.preventDefault();
+          handleRegister();
+        }}>
         <label>First Name:</label>
         <input
           type="text"
@@ -39,15 +108,20 @@ function RegisterPage({ onBackToLogin }: RegisterPageProps) {
 
         <label>Password:</label>
         <input
-          type="password"
+          type={showPassword? "text":"password"}
           value={password}
           onChange={(event) => setPassword(event.target.value)}
         />
+        <button type="button" onClick={()=>setShowPassword(!showPassword)}>{showPassword?"Hide":"Show"}</button>
 
-        <button type="button">Register</button>
-      </div>
+        <button 
+          type="submit"
+          disabled={isSubmitting}
+        >{isSubmitting?"Registering..":"Register"}</button>
+        {error && <p>{error}</p>}
+      </form>
 
-      <button onClick={onBackToLogin}>Back to Login</button>
+      <button disabled={isSubmitting} onClick={()=>onBackToLogin("")}>Back to Login</button>
     </main>
   );
 }

@@ -33,6 +33,7 @@ public class GlobalExceptionMiddleware
         var statusCode = exception switch
         {
             DuplicateEmailException => HttpStatusCode.Conflict,
+            InvalidCredentialsException => HttpStatusCode.Unauthorized,
             ArgumentException => HttpStatusCode.BadRequest,
             UnauthorizedAccessException => HttpStatusCode.Unauthorized,
             _ => HttpStatusCode.InternalServerError
