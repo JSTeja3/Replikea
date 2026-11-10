@@ -41,7 +41,7 @@ The application follows a layered backend architecture. The frontend communicate
              v
            Auth API
      (Authentication / Tokens)
-</text>
+```
 
 ## 3. Component Responsibilities
 
