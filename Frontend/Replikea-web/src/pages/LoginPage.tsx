@@ -74,7 +74,7 @@ function LoginPage() {
       <div className="auth-card">
 
         <div className="auth-brand">
-          <img src="/replikea_logo.png" alt="Replikea" />
+          <img src="/replikea-logo.png" alt="Replikea" />
         </div>
 
         <div className="auth-tabs">
