@@ -11,7 +11,13 @@ function App() {
   const {isAuthenticated, isLoading} = useAuth();
 
   if(isLoading){
-    return <p>Checking your session...</p>
+    return (
+            <div className="session-loading">
+                <img src="/replikea_icon.png" alt="Replikea" className="session-logo" />
+                <div className="loading-spinner"></div>
+                <p>Checking your session...</p>
+            </div>
+        );
   }
   return isAuthenticated? <HomePage /> : <LoginPage />;
 }

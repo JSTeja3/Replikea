@@ -264,3 +264,56 @@
     gap: 20px;
   }
 }
+
+/* Session loading css */
+
+.session-loading {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    background: var(--color-background);
+}
+
+.session-loading p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    font-size: 15px;
+}
+
+.loading-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--color-border);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Logo */
+
+.auth-brand {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.auth-brand img {
+    width: 160px;
+    height: auto;
+    object-fit: contain;
+}
+
+.session-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}

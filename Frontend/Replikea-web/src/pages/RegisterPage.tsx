@@ -195,7 +195,7 @@ function RegisterPage({ onBackToLogin }: RegisterPageProps) {
             className="primary-button"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Registering..." : "Complete Registration"}
+            {isSubmitting ? "Registering..." : "Register"}
           </button>
         </div>
       </form>

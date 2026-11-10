@@ -16,6 +16,7 @@ function LoginPage() {
   const { login } = useAuth();
   const [showRegister, setShowRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleLogin() {
     if (!email.trim()) {
@@ -26,7 +27,13 @@ function LoginPage() {
       setError("Please enter a valid email address");
       return;
     }
+    if (showPasswordInput && !password.trim()) {
+        setError("Please enter your password");
+        return;
+    }
 
+
+    setIsSubmitting(true);
     setError("");
 
     try {
@@ -42,31 +49,34 @@ function LoginPage() {
 
         return;
       }
-      //FLOW 2: Validate Password
-      if (!password.trim()) {
-        setError("Please enter your password");
-        return;
-      }
 
-      //FLOW 3: Login
+      //FLOW 2: Login
       const data = await loginRequest({
         email: email,
         password: password,
       });
 
-      //FLOW 4:Retrieve authentication token
+      //FLOW 3: Retrieve authentication token
       const sessionData = await getSession(data.accessToken);
 
-      // FLOW 5: Update React authentication state
+      // FLOW 4: Update React authentication state
       login(data.accessToken, sessionData);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    }
+    finally{
+      setIsSubmitting(false);
     }
   }
 
   return (
     <main className="auth-page">
       <div className="auth-card">
+
+        <div className="auth-brand">
+          <img src="/replikea_logo.png" alt="Replikea" />
+        </div>
+
         <div className="auth-tabs">
           <button
             type="button"
@@ -144,8 +154,16 @@ function LoginPage() {
 
               {error && <p className="auth-error">{error}</p>}
 
-              <button className="primary-button" onClick={handleLogin}>
-                {showPasswordInput ? "Sign In to Workspace" : "Continue"}
+              <button
+                className="primary-button"
+                onClick={handleLogin}
+                disabled={isSubmitting}
+              >
+                {isSubmitting
+                  ? "Signing in..."
+                  : showPasswordInput
+                    ? "Sign In to Workspace"
+                    : "Continue"}
               </button>
             </div>
           </>
