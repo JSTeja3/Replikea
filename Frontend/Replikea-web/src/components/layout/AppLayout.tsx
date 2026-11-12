@@ -2,12 +2,10 @@
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
+import { Outlet } from "react-router-dom";
 
-interface AppLayoutProps {
-    children: React.ReactNode;
-}
 
-function AppLayout({ children }: AppLayoutProps) {
+function AppLayout() {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
     function toggleSidebar() {
@@ -22,7 +20,7 @@ function AppLayout({ children }: AppLayoutProps) {
                 <Header onMenuClick={toggleSidebar}/>
 
                 <main className="app-content">
-                    {children}
+                    <Outlet/>
                 </main>
             </div>
         </div>
