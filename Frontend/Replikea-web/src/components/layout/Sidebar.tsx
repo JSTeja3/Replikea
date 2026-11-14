@@ -23,8 +23,8 @@ const navigationItems = [
     icon: PackagePlus,
   },
   {
-    label: "Product Design",
-    path: "/product-design",
+    label: "Product Documentation",
+    path: "/product-documentation",
     icon: FileText,
   },
   {

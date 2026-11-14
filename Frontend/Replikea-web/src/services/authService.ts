@@ -31,6 +31,8 @@ export interface LoginResponse {
 export interface SessionResponse {
     authenticated: boolean;
     userId: string;
+    firstName: string;
+    lastName: string;
     email: string;
     role: string;
 }

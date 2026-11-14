@@ -5,7 +5,7 @@ function HomePage(){
 
     return (
         <main>
-            <h1>Welcom to Replikea</h1>
+            <h1>Welcome to Replikea</h1>
 
             <p>Hello, {user?.email} </p>
             <p>Role: {user?.role} </p>

@@ -39,4 +39,9 @@ public class AuthenticationService : IAuthenticationService
     {
         return await authApiClient.RegisterAsync(request);
     }
+
+    public async Task<UserProfileResponse> GetProfileAsync(string accessToken, CancellationToken cancellationToken = default)
+    {
+        return await authApiClient.GetProfileAsync(accessToken, cancellationToken);
+    }
 }

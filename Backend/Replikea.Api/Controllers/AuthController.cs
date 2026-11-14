@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using System.Net.Http.Headers;
 
 using Replikea.Application.DTOs.Authentication;
 using Replikea.Application.Interfaces.Authentication;
@@ -24,7 +25,7 @@ public class AuthController : ControllerBase
 
     [Authorize]
     [HttpGet("session")]
-    public IActionResult GetSession()
+    public async Task<IActionResult> GetSession(CancellationToken cancellationToken)
     {
         // To get how claims are assigned
         // var claims = User.Claims.Select(c => new
@@ -35,18 +36,26 @@ public class AuthController : ControllerBase
 
         // return Ok(claims);
 
-        return Ok(new
+        var authorizationHeader = Request.Headers.Authorization.ToString();
+
+        if (!AuthenticationHeaderValue.TryParse(authorizationHeader,out var authorization) ||
+            !string.Equals(authorization.Scheme, "Bearer", StringComparison.OrdinalIgnoreCase) ||
+            string.IsNullOrWhiteSpace(authorization.Parameter))
         {
-            authenticated = true,
-            userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
-            email = User.FindFirst(ClaimTypes.Email)?.Value,
-            role = User.FindFirst(ClaimTypes.Role)?.Value
-        });
+            return Unauthorized();
+        }
+
+        var response = await authService.GetProfileAsync(
+            authorization.Parameter,
+            cancellationToken
+        );
+
+        return Ok(response);
     }
 
 
     [HttpPost("check-email")]
-    public async Task<ActionResult<CheckEmailResponse>> CheckEmailAsync(CheckEmailRequest request)
+    public async Task<ActionResult<CheckEmailResponse>> CheckEmail(CheckEmailRequest request)
     {
         var result = await authService.CheckEmailAsync(request);
 

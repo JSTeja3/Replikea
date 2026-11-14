@@ -14,11 +14,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const initialized = useRef(false);
 
-  function login(token: string, userData: AuthUser) {
+  const login = useCallback((token: string, userData: AuthUser) => {
     setAccessToken(token);
     setUser(userData);
     setIsLoading(false);
-  }
+  }, []);
 
   async function logout() {
     try {
@@ -40,13 +40,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       //2. Validate the new access token and retrieve user details
       const sessionData = await getSession(refreshData.accessToken);
 
-      login(refreshData.accessToken, sessionData);
+      login(refreshData.accessToken, {
+        userId: sessionData.userId,
+        firstName: sessionData.firstName,
+        lastName: sessionData.lastName,
+        email: sessionData.email,
+        role: sessionData.role,
+      });
     } catch (error) {
       console.error("Session restore failed: ", error);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [login]);
 
   const isAuthenticated = accessToken !== null && user !== null;
 

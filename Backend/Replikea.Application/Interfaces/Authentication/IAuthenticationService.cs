@@ -9,4 +9,5 @@ public interface IAuthenticationService
     Task<LoginResponseAuthApi> RefreshAsync(RefreshRequest request);
     Task<LogoutResponse> LogoutAsync(LogoutRequest request);
     Task<RegisterResponse> RegisterAsync(RegisterRequest request);
+    Task<UserProfileResponse> GetProfileAsync(string accessToken, CancellationToken cancellationToken = default);
 }

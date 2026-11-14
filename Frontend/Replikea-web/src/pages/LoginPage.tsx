@@ -28,10 +28,9 @@ function LoginPage() {
       return;
     }
     if (showPasswordInput && !password.trim()) {
-        setError("Please enter your password");
-        return;
+      setError("Please enter your password");
+      return;
     }
-
 
     setIsSubmitting(true);
     setError("");
@@ -60,11 +59,20 @@ function LoginPage() {
       const sessionData = await getSession(data.accessToken);
 
       // FLOW 4: Update React authentication state
-      login(data.accessToken, sessionData);
+      login(data.accessToken, {
+        userId: sessionData.userId,
+        firstName: sessionData.firstName,
+        lastName: sessionData.lastName,
+        email: sessionData.email,
+        role: sessionData.role,
+      });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
-    }
-    finally{
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again.",
+      );
+    } finally {
       setIsSubmitting(false);
     }
   }
@@ -72,7 +80,6 @@ function LoginPage() {
   return (
     <main className="auth-page">
       <div className="auth-card">
-
         <div className="auth-brand">
           <img src="/replikea-logo.png" alt="Replikea" />
         </div>
@@ -81,7 +88,13 @@ function LoginPage() {
           <button
             type="button"
             className={!showRegister ? "active" : ""}
-            onClick={() => setShowRegister(false)}
+            onClick={() => {
+              setShowRegister(false);
+              setShowPasswordInput(false);
+              setPassword("");
+              setShowPassword(false);
+              setError("");
+            }}
           >
             Sign In
           </button>
@@ -103,6 +116,7 @@ function LoginPage() {
               setPassword("");
               setError("");
               setShowRegister(false);
+              setShowPassword(false);
             }}
           />
         ) : (

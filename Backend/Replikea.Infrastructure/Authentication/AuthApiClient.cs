@@ -3,6 +3,7 @@ using Replikea.Application.Interfaces.Authentication;
 using Replikea.Application.DTOs.Authentication;
 using System.Net;
 using Replikea.Application.Exceptions;
+using System.Net.Http.Headers;
 
 namespace Replikea.Infrastructure.Authentication;
 
@@ -19,7 +20,7 @@ public class AuthApiClient : IAuthApiClient
     {
         var response = await httpClient.PostAsJsonAsync("/api/auth/login", request);
 
-        if(response.StatusCode == HttpStatusCode.Unauthorized)
+        if (response.StatusCode == HttpStatusCode.Unauthorized)
         {
             throw new InvalidCredentialsException("Invalid email or password.");
         }
@@ -32,7 +33,7 @@ public class AuthApiClient : IAuthApiClient
         return result
             ?? throw new InvalidOperationException(
                 "Auth API returned an empty login response.");
-        
+
     }
     public async Task<LoginResponseAuthApi> RefreshAsync(RefreshRequest request)
     {
@@ -46,7 +47,7 @@ public class AuthApiClient : IAuthApiClient
         return result
             ?? throw new InvalidOperationException(
                 "Auth API returned an empty refresh response.");
-        
+
     }
     public async Task<LogoutResponse> LogoutAsync(LogoutRequest request)
     {
@@ -60,13 +61,13 @@ public class AuthApiClient : IAuthApiClient
         return result
             ?? throw new InvalidOperationException(
                 "Auth API returned an empty logout response.");
-        
+
     }
     public async Task<RegisterResponse> RegisterAsync(RegisterRequest request)
     {
         var response = await httpClient.PostAsJsonAsync("/api/auth/register", request);
 
-        if(response.StatusCode == HttpStatusCode.Conflict)
+        if (response.StatusCode == HttpStatusCode.Conflict)
         {
             throw new DuplicateEmailException("An account with this email address already exists.");
         }
@@ -74,11 +75,39 @@ public class AuthApiClient : IAuthApiClient
         response.EnsureSuccessStatusCode();
 
         var result = await response.Content
-            .ReadFromJsonAsync<RegisterResponse>();
+        .ReadFromJsonAsync<RegisterResponse>();
 
         return result
             ?? throw new InvalidOperationException(
                 "Auth API returned an empty registration response.");
-        
+
+    }
+
+
+
+    public async Task<UserProfileResponse> GetProfileAsync(string accessToken, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(accessToken);
+
+       
+        using var request = new HttpRequestMessage(HttpMethod.Get, "/api/auth/profile");
+
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+        //using var response helps dispose response safely when its use is completed as since HttpResponseMessage uses IDisposable
+        var response = await httpClient.SendAsync(
+            request,
+            cancellationToken
+        );
+
+        response.EnsureSuccessStatusCode();
+
+        var result = await response.Content
+        .ReadFromJsonAsync<UserProfileResponse>(cancellationToken);
+
+        return result
+            ?? throw new InvalidOperationException(
+                "Auth API returned an empty profile response."
+            );
     }
 }
