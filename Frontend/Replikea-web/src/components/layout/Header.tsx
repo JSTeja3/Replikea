@@ -1,11 +1,12 @@
-import { Menu, LogOut, UserRound } from "lucide-react";
+import { PanelLeftClose, PanelLeftOpen, LogOut, UserRound } from "lucide-react";
 import { useAuth } from "../../context/useAuth";
 
 interface HeaderProps {
+  isCollapsed: boolean;
   onMenuClick: () => void;
 }
 
-function Header({ onMenuClick }: HeaderProps) {
+function Header({ isCollapsed, onMenuClick }: HeaderProps) {
   const {user, logout} = useAuth();
 
 
@@ -19,9 +20,12 @@ function Header({ onMenuClick }: HeaderProps) {
         type="button"
         className="menu_button"
         onClick={onMenuClick}
-        aria-label="Toggle sidebar"
+        aria-label={isCollapsed? "Expand sidebar":"Collapse sidebar"}
+        title={isCollapsed? "Expand sidebar":"Collapse sidebar"}
       >
-        <Menu size={22} />
+        {isCollapsed? <PanelLeftOpen size={21} /> : <PanelLeftClose size={21} />
+    }
+
       </button>
       <div className="header-actions">
         <div className="header-user">

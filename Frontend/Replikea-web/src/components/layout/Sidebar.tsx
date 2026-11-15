@@ -2,7 +2,9 @@ import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
   PackagePlus,
+  Layers,
   FileText,
+  UserGroup,
   Bell,
   CircleHelp,
 } from "lucide-react";
@@ -25,7 +27,17 @@ const navigationItems = [
   {
     label: "Product Documentation",
     path: "/product-documentation",
+    icon: Layers,
+  },
+  {
+    label: "Document Management",
+    path: "/document-management",
     icon: FileText,
+  },
+  {
+    label: "Project Management",
+    path: "/project-management",
+    icon: UserGroup,
   },
   {
     label: "Notifications",
@@ -63,10 +75,11 @@ function Sidebar({ isCollapsed }: SidebarProps) {
                 `sidebar-link ${isActive ? "active" : ""}`
               }
               title={isCollapsed ? item.label : undefined}
+              aria-label={item.label}
             >
               <Icon size={20} />
-
-              {!isCollapsed && <span>{item.label}</span>}
+              {!isCollapsed? <span>{item.label}</span>:undefined}
+              
             </NavLink>
           );
         })}

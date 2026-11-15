@@ -17,7 +17,7 @@ function AppLayout() {
             <Sidebar isCollapsed={isSidebarCollapsed}/>
 
             <div className="app-main">
-                <Header onMenuClick={toggleSidebar}/>
+                <Header isCollapsed={isSidebarCollapsed} onMenuClick={toggleSidebar}/>
 
                 <main className="app-content">
                     <Outlet/>

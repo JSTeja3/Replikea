@@ -16,7 +16,7 @@ function App() {
   if(isLoading){
     return (
             <div className="session-loading">
-                <img src="/replikea_icon.png" alt="Replikea" className="session-logo" />
+                <img src="/replikea-icon.png" alt="Replikea" className="session-logo" />
                 <div className="loading-spinner"></div>
                 <p>Checking your session...</p>
             </div>

@@ -1,7 +1,7 @@
 import { useAuth } from '../context/useAuth'
 
 function HomePage(){
-    const {user, logout} = useAuth();
+    const {user} = useAuth();
 
     return (
         <main>
@@ -10,9 +10,6 @@ function HomePage(){
             <p>Hello, {user?.email} </p>
             <p>Role: {user?.role} </p>
 
-            <button onClick={logout}>
-                Logout
-            </button>
         </main>
     );
 }
