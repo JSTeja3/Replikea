@@ -5,6 +5,7 @@
 import './App.css'
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
+import ProductManagementPage from './pages/ProductManagementPage';
 import AppLayout from './components/layout/AppLayout';
 import { useAuth } from './context/useAuth';
 import { Navigate, Route, Routes } from "react-router-dom";
@@ -30,6 +31,7 @@ function App() {
       {/* Protected routes */}
       <Route element={isAuthenticated? <AppLayout /> : <Navigate to="/login" replace />}>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/products" element={<ProductManagementPage />} />
       </Route>
                 
       {/* Unknown routes */}

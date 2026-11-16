@@ -20,7 +20,7 @@ function AppLayout() {
                 <Header isCollapsed={isSidebarCollapsed} onMenuClick={toggleSidebar}/>
 
                 <main className="app-content">
-                    <Outlet/>
+                    <Outlet />
                 </main>
             </div>
         </div>

@@ -1,14 +1,20 @@
-import { useAuth } from '../context/useAuth'
+//import { useAuth } from '../context/useAuth'
 
 function HomePage(){
-    const {user} = useAuth();
+    //const {user} = useAuth();
 
     return (
-        <main>
+        <main className="home-page">
+            <div className="home-welcome">
+
             <h1>Welcome to Replikea</h1>
 
-            <p>Hello, {user?.email} </p>
-            <p>Role: {user?.role} </p>
+            <p className="home-description">
+                Your enterprise workspace for managing products,
+                    documentation and business operations.
+            </p>
+        
+            </div>
 
         </main>
     );
