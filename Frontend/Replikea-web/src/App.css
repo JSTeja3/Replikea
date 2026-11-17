@@ -1,5 +1,7 @@
 
-/* Authentication page layout */
+/* ========================================
+  AUTHENTICATION PAGE LAYOUT
+======================================== */
 
 .auth-page {
   min-height: 100vh;
@@ -19,18 +21,6 @@
   padding: 40px;
 }
 
-/* Responsive layout */
-
-@media (max-width: 600px) {
-  .auth-page {
-    padding: 16px;
-    align-items: flex-start;
-  }
-
-  .auth-card {
-    padding: 24px 20px;
-  }
-}
 
 /* Authentication heading */
 
@@ -53,11 +43,6 @@
   margin: 0;
 }
 
-@media (max-width: 600px) {
-  .auth-header h1 {
-    font-size: 28px;
-  }
-}
 
 
 /* Form layout */
@@ -256,14 +241,6 @@
   margin-top: 6px;
 }
 
-/* Mobile registration layout */
-
-@media (max-width: 600px) {
-  .form-row {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-}
 
 /* Session loading css */
 
@@ -587,7 +564,33 @@
 /* ========================================
    RESPONSIVE
 ======================================== */
+/* Responsive layout auth page */
 
+@media (max-width: 600px) {
+  .auth-page {
+    padding: 16px;
+    align-items: flex-start;
+  }
+
+  .auth-card {
+    padding: 24px 20px;
+  }
+
+  .auth-header h1 {
+    font-size: 28px;
+  }
+}
+
+/* Mobile registration layout */
+
+@media (max-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* Responsive layout applayout */
 @media (max-width: 768px) {
     .app-content {
         padding: 20px;
@@ -660,4 +663,233 @@
     line-height: 1.7;
 
     color: var(--color-text-secondary);
+}
+
+/* Product Management Page */
+
+.product-management-page {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    height: 100%;
+}
+
+/* Page Heading */
+
+.page-heading h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.page-heading p {
+    margin: 6px 0 0;
+    font-size: 14px;
+    color: var(--color-text-secondary);
+}
+
+/* Search and Filter Toolbar */
+
+.product-toolbar {
+    min-height: 64px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: 14px 18px;
+}
+
+/* Main Workspace */
+
+.product-workspace {
+    display: grid;
+    grid-template-columns: minmax(280px, 32%) minmax(0, 1fr);
+    gap: 20px;
+    flex: 1;
+    min-height: 450px;
+}
+
+/* Workspace Panels */
+
+.product-list-panel,
+.product-editor-panel {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: 20px;
+    min-width: 0;
+}
+
+.product-list-panel {
+    overflow-y: auto;
+}
+
+.product-editor-panel {
+    overflow-y: auto;
+}
+
+/* ========================================
+   PRODUCT MANAGEMENT PAGE
+======================================== */
+.product-management-page {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    height: 100%;
+}
+
+/* Page Heading */
+
+.page-heading h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.page-heading p {
+    margin: 6px 0 0;
+    font-size: 14px;
+    color: var(--color-text-secondary);
+}
+
+/* Search and Filter Toolbar */
+
+.product-toolbar {
+    min-height: 64px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: 14px 18px;
+}
+
+/* Main Workspace */
+
+.product-workspace {
+    display: grid;
+    grid-template-columns: minmax(280px, 32%) minmax(0, 1fr);
+    gap: 20px;
+    flex: 1;
+    min-height: 450px;
+}
+
+/* Workspace Panels */
+
+.product-list-panel,
+.product-editor-panel {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: 20px;
+    min-width: 0;
+}
+
+.product-list-panel {
+    overflow-y: auto;
+}
+
+.product-editor-panel {
+    overflow-y: auto;
+}
+
+/* ========================================
+   PRODUCT WORKSPACE
+======================================== */
+
+/* Product Toolbar */
+
+.product-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-card);
+    padding: 16px 18px;
+}
+
+.product-search {
+    position: relative;
+}
+
+.product-search .search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-secondary);
+    pointer-events: none;
+}
+
+.product-search input {
+    width: 100%;
+    height: 46px;
+    padding: 0 48px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-input);
+    background: var(--color-input);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.product-search input:focus {
+    border-color: var(--color-primary);
+}
+
+.product-filters {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.product-filters select {
+    height: 30px;
+    min-width: 140px;
+    padding: 0 42px 0 16px;
+
+    border: 1px solid transparent;
+    border-radius: 10px;
+
+    background-color: var(--color-primary-light);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23555866' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+
+}
+
+.clear-filters {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    gap:10px;
+
+    padding: 0 14px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--color-text-secondary);
+
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.clear-filters:hover {
+    background: var(--color-action-hover);
+    color: var(--color-action-danger);
 }
