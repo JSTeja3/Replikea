@@ -26,7 +26,7 @@ function PageToolbar() {
                 </select>
 
                 <button type="button" className="clear-filters">
-                    <FunnelX size={18} />
+                    <FunnelX size={14} />
                     Clear filters
                 </button>
             </div>

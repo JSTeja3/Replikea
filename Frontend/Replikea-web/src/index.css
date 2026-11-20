@@ -35,6 +35,21 @@
   --radius-card: 14px;
   --radius-input: 9px;
   --radius-button: 9px;
+
+  /* Product status colors */
+--color-status-active: #16a34a;
+--color-status-active-bg: #dcfce7;
+
+--color-status-draft: #b45309;
+--color-status-draft-bg: #fef3c7;
+
+--color-status-inactive: #6b7280;
+--color-status-inactive-bg: #e5e7eb;
+
+/* Selection colors */
+--color-selection-bg: #eef2ff;
+--color-selection-border: #4f46e5;
+
 }
 
 * {
