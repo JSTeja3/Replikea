@@ -67,6 +67,16 @@ function ProductManagementPage() {
     sampleProducts[0],
   );
 
+  const [selectedProductIds, setSelectedProductIds] = useState<number[]>([]);
+
+  function handleToggleProductSelection(productId: number) {
+    setSelectedProductIds(previous =>
+        previous.includes(productId)
+            ? previous.filter(id => id !== productId)
+            : [...previous, productId]
+    );
+  }
+
   return (
     <div className="product-management-page">
       <div className="page-heading">
@@ -83,7 +93,9 @@ function ProductManagementPage() {
           <RecordList
             products={sampleProducts}
             selectedProductId={selectedProduct?.id ?? null}
+            selectedProductIds={selectedProductIds}
             onSelectProduct={setSelectedProduct}
+            onToggleProductSelection={handleToggleProductSelection}
           />
         </section>
 

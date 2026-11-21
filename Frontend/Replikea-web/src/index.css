@@ -50,6 +50,9 @@
 --color-selection-bg: #eef2ff;
 --color-selection-border: #4f46e5;
 
+/* Padding across pages */
+--layout-content-padding: 16px;
+
 }
 
 * {
